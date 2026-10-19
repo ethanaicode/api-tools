@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Tools - 实用接口工具集</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --text:#1f2430; --muted:#6b7280; --accent:#2563eb; --border:#e5e7eb; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.6 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); }
+  .wrap { max-width:880px; margin:0 auto; padding:0 20px; }
+  header { padding:56px 0 24px; }
+  h1 { margin:0 0 8px; font-size:30px; }
+  header p { margin:0; color:var(--muted); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px; margin:16px 0; }
+  .card h2 { margin:0 0 6px; font-size:18px; display:flex; align-items:center; gap:8px; }
+  .tag { font-size:12px; font-weight:600; color:#fff; background:var(--accent); border-radius:4px; padding:1px 7px; }
+  .desc { color:var(--muted); margin:0 0 12px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; margin-bottom:12px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:500; }
+  code { background:#f0f2f5; padding:2px 6px; border-radius:4px; font-family:ui-monospace,Menlo,monospace; font-size:13px; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .try { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:12px; }
+  .try input { flex:1; min-width:200px; padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:14px; }
+  .try button { padding:7px 16px; border:0; border-radius:6px; background:var(--accent); color:#fff; cursor:pointer; }
+  .try img { width:32px; height:32px; object-fit:contain; }
+  footer { color:var(--muted); font-size:13px; padding:24px 0 48px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>API Tools</h1>
+    <p>一组简单、免费、开箱即用的小型 API 工具,持续更新中。</p>
+  </header>
+  <main id="apis"><p class="desc">加载中…</p></main>
+  <footer>更多接口陆续加入 · 新增接口只需在 <code>apis.json</code> 中添加一项</footer>
+</div>
+<script>
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+fetch('apis.json').then(r => r.json()).then(list => {
+  const box = document.getElementById('apis');
+  box.innerHTML = '';
+  list.forEach(api => {
+    const rows = (api.params || []).map(p =>
+      `<tr><td><code>${esc(p.name)}</code></td><td>${p.required ? '是' : '否'}</td><td>${esc(p.desc)}</td></tr>`).join('');
+    const el = document.createElement('section');
+    el.className = 'card';
+    el.innerHTML = `
+      <h2><span class="tag">${esc(api.method || 'GET')}</span>${esc(api.name)}</h2>
+      <p class="desc">${esc(api.description)}</p>
+      <p><code>${esc(api.path)}</code></p>
+      ${rows ? `<table><tr><th>参数</th><th>必填</th><th>说明</th></tr>${rows}</table>` : ''}
+      ${api.example ? `<p>示例:<a href="${esc(api.example)}" target="_blank">${esc(location.origin + api.example)}</a></p>` : ''}
+      ${api.preview ? `<div class="try"><input value="github.com" aria-label="url"><button>试一试</button><img alt=""></div>` : ''}`;
+    if (api.preview) {
+      const input = el.querySelector('input'), img = el.querySelector('img');
+      const go = () => { img.src = api.path + '?url=' + encodeURIComponent(input.value.trim()); };
+      el.querySelector('button').onclick = go;
+      input.onkeydown = e => { if (e.key === 'Enter') go(); };
+      go();
+    }
+    box.appendChild(el);
+  });
+}).catch(() => {
+  document.getElementById('apis').innerHTML = '<p class="desc">接口列表加载失败。</p>';
+});
+</script>
+</body>
+</html>

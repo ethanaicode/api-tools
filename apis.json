@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Favicon 获取器",
+    "path": "/ico/",
+    "method": "GET",
+    "description": "获取任意网站的 favicon。优先读取本地缓存,没有则从目标网站抓取,实在获取不到时返回默认图标。",
+    "params": [
+      { "name": "url", "required": true, "desc": "网站域名或完整网址,如 github.com" },
+      { "name": "refresh", "required": false, "desc": "设为 1 时忽略缓存重新获取" }
+    ],
+    "example": "/ico/?url=https://pan.yzitc.com",
+    "preview": true
+  }
+]
