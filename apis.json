@@ -8,7 +8,7 @@
       { "name": "url", "required": true, "desc": "网站域名或完整网址,如 github.com" },
       { "name": "refresh", "required": false, "desc": "设为 1 时忽略缓存重新获取" }
     ],
-    "example": "/ico/?url=https://pan.yzitc.com",
+    "example": "/ico/?url=https://www.yzitc.com",
     "preview": true
   }
 ]

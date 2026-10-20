@@ -37,7 +37,7 @@
     <p>一组简单、免费、开箱即用的小型 API 工具,持续更新中。</p>
   </header>
   <main id="apis"><p class="desc">加载中…</p></main>
-  <footer>更多接口陆续加入 · 新增接口只需在 <code>apis.json</code> 中添加一项</footer>
+  <footer>更多接口陆续加入·Copyright © 2026·原子图层</footer>
 </div>
 <script>
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -55,7 +55,7 @@ fetch('apis.json').then(r => r.json()).then(list => {
       <p class="desc">${esc(api.description)}</p>
       <p><code>${esc(api.path)}</code></p>
       ${rows ? `<table><tr><th>参数</th><th>必填</th><th>说明</th></tr>${rows}</table>` : ''}
-      ${api.example ? `<p>示例:<a href="${esc(api.example)}" target="_blank">${esc(location.origin + api.example)}</a></p>` : ''}
+      ${api.example ? `<p>示例: <a href="${esc(api.example)}" target="_blank">${esc(location.origin + api.example)}</a></p>` : ''}
       ${api.preview ? `<div class="try"><input value="github.com" aria-label="url"><button>试一试</button><img alt=""></div>` : ''}`;
     if (api.preview) {
       const input = el.querySelector('input'), img = el.querySelector('img');

@@ -1,2 +1,3 @@
+.vscode/
 ico/public/favicons/*
 !ico/public/favicons/.gitkeep
